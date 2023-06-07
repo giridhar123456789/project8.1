@@ -35,4 +35,24 @@ class Delete(View):
         p=product.objects.get(pid=p_id)
         p.delete()
         return redirect('/productapp/display')
-
+class UpdateInput(View):
+    def get(self,request):
+        qs = product.objects.all()
+        condic = {"records": qs}
+        return render(request, 'updateinput.html', context=condic)
+class UpdateDetails(View):
+    def get(self,request):
+        p_id=int(request.GET["t1"])
+        prod=product.objects.get(pid=p_id)
+        condic={'rec':prod}
+        return render(request,'update.html',context=condic)
+class Update(View):
+    def get(self,request):
+        p_id=int(request.GET["t1"])
+        prod=product.objects.get(pid=p_id)
+        prod.pname=request.GET["t2"]
+        prod.pcost=float(request.GET["t3"])
+        prod.pmfdt=request.GET["t4"]
+        prod.pexpdt=request.GET["t5"]
+        prod.save()
+        return redirect('/productapp/display')
